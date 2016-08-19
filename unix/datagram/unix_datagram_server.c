@@ -18,8 +18,7 @@
 */
 #include "unix_datagram_socket.h"
 
-int
-main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
     struct sockaddr_un svaddr, claddr;
     int sfd, j;
@@ -27,45 +26,56 @@ main(int argc, char *argv[])
     socklen_t len;
     char buf[BUF_SIZE];
 
-    sfd = socket(AF_UNIX, SOCK_DGRAM, 0);       /* Create server socket */
-    if (sfd == -1)
+    // Create server socket
+    sfd = socket(AF_UNIX, SOCK_DGRAM, 0);
+    if (-1 == sfd)
+    {
         errExit("socket");
+    }
 
-    /* Construct well-known address and bind server socket to it */
+    // Construct well-known address and bind server socket to it
 
-    /* For an explanation of the following check, see the erratum note for
-       page 1168 at http://www.man7.org/tlpi/errata/. */
-
-    if (strlen(SV_SOCK_PATH) > sizeof(svaddr.sun_path) - 1)
+    // For an explanation of the following check, see the erratum note for
+    //   page 1168 at http://www.man7.org/tlpi/errata/.
+    if (strlen(SV_SOCK_PATH) > (sizeof(svaddr.sun_path) - 1) )
+    {
         fatal("Server socket path too long: %s", SV_SOCK_PATH);
+    }
 
-    if (remove(SV_SOCK_PATH) == -1 && errno != ENOENT)
+    if ( (-1 == remove(SV_SOCK_PATH)) && (ENOENT != errno) )
+    {
         errExit("remove-%s", SV_SOCK_PATH);
+    }
 
     memset(&svaddr, 0, sizeof(struct sockaddr_un));
     svaddr.sun_family = AF_UNIX;
     strncpy(svaddr.sun_path, SV_SOCK_PATH, sizeof(svaddr.sun_path) - 1);
 
-    if (bind(sfd, (struct sockaddr *) &svaddr, sizeof(struct sockaddr_un)) == -1)
+    if ( -1 == bind(sfd, (struct sockaddr *) &svaddr, sizeof(struct sockaddr_un)) )
+    {
         errExit("bind");
+    }
 
-    /* Receive messages, convert to uppercase, and return to client */
-
-    for (;;) {
+    // Receive messages, convert to uppercase, and return to client
+    for (;;)
+    {
         len = sizeof(struct sockaddr_un);
-        numBytes = recvfrom(sfd, buf, BUF_SIZE, 0,
-                            (struct sockaddr *) &claddr, &len);
-        if (numBytes == -1)
+        numBytes = recvfrom(sfd, buf, BUF_SIZE, 0, (struct sockaddr *) &claddr, &len);
+        if (-1 == numBytes)
+        {
             errExit("recvfrom");
+        }
 
-        printf("Server received %ld bytes from %s\n", (long) numBytes,
-                claddr.sun_path);
+        printf("Server received %ld bytes from %s\n", (long) numBytes, claddr.sun_path);
 
         for (j = 0; j < numBytes; j++)
+        {
             buf[j] = toupper((unsigned char) buf[j]);
+        }
 
-        if (sendto(sfd, buf, numBytes, 0, (struct sockaddr *) &claddr, len) !=
-                numBytes)
+        if (sendto(sfd, buf, numBytes, 0, (struct sockaddr *) &claddr, len) != numBytes)
+        {
             fatal("sendto");
+        }
     }
 }
