@@ -1,5 +1,5 @@
 C code for UNIX domain stream sockets
-=====================================
+==============================
 This directory contains pure C code for working with UNIX domain stream sockets
 on aPOSIX operating system.
 
@@ -31,7 +31,7 @@ tested in the following manner:
     cd build
     ./unix_stream_server > server_out.txt &
     ls -lF /tmp/us*
-    ./unix_stream_client < "hello world"
+    echo "hello world" | ./unix_stream_client 
     kill %1
     cat server.out.txt
 
