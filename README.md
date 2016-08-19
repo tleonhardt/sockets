@@ -70,3 +70,51 @@ direct socket programming:
     * Connect your code in any language, on any platform.
     * Carries messages across inproc, IPC, TCP, TIPC, multicast
     * Smart patterns like pub-sub, push-pull, and router-dealer
+
+
+Warnings Regarding Stream Sockets
+--------------------------------
+Stream sockets are wonderful in that they are reliable.  What this means is that we
+are guaranteed that either the transmitted data will arrive intact at the receiving
+application, exactly as it was transmitted by the sender (assuming that neither
+the network link nor the receiver crashes), or that we will receive notification
+of a probable failure in transmission.  
+
+But there are a couple caveats that you need to be aware of otherwise they will bite
+you very hard:
+
+1. A stream socket may be closed by using the *close()* system call or as a consequence of
+    the application terminating.  Afterward, when the peer application attempts to read
+    from the other end of the connection, it receives end-of-file (once all buffered
+    data has been read).  If the peer application attempts to write to its socket,
+    it receives a SIGPIPE signal, and the system call fails with the error EPIPE.  Since the default behavior of a SIGPIPE is to kill the application and this signal
+    is redundant due to the EPIPE error returend, the usual and recommended way
+    of dealing with this is to potential fatal crash is to ignore the SIGPIPE
+    signal and find out about the closed connection via the EPIPE error.
+1. Stream sockets do not in general preserve message boundaries.  Practically what
+    this means is your receiver code needs to deal with large messages getting fragmented
+    across multiple packets and potentially with multiple smaller messages getting jammed
+    together within the same packet (or a mix of the two above cases).  There are a lot of
+    "edge" cases that you can screw up here.  I've seen working and tested code which has
+    been deployed in the field for a decade suddenly break when the data rate doubles because
+    a developer forgot to properly deal with one of these edge cases.
+
+
+Warnings Regarding Datagram Sockets
+-----------------------------------
+Datagram sockets have the advantages of preserving message boundaries and being
+connectionless.  This means you don't need to deal with message fragmentation, which
+is rather swell.  However, the down side with datagrams is that they are unreliable
+and you will typically need to implement an application-level protocol for dealing
+with this unreliability, which can get quite complicated in it's own right.
+
+You need to be aware of the following possibilities and
+generally deal with them:
+
+1. Messages may arrive out of order
+1. Messages may be duplicated
+1. Messages may not arrive at all
+1. Since this is a connectionless protocol, you won't automatically get any warning or error when any of the above occurs
+
+NOTE: UNIX domain datagram sockets are actually fully reliable, so you don't need
+to worry about the points mentioned above with them.
