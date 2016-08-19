@@ -8,7 +8,8 @@
 * the file COPYING.gpl-v3 for details.                                    *
 \*************************************************************************/
 
-/* Adapted from The Linux Programming Interface (TLPI) Listing 57-3: us_xfr_sv.c
+/* unix_stream_server.c
+   Adapted from The Linux Programming Interface (TLPI) Listing 57-3: us_xfr_sv.c
 
    An example UNIX stream socket server. Accepts incoming connections
    and copies data sent from clients to stdout.

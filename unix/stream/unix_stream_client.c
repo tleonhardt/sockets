@@ -8,7 +8,8 @@
 * the file COPYING.gpl-v3 for details.                                    *
 \*************************************************************************/
 
-/* Adapted from The Linux Programming Interface (TLPI) Listing 57-4: us_xfr_cl.c
+/* unix_stream_client.c
+   Adapted from The Linux Programming Interface (TLPI) Listing 57-4: us_xfr_cl.c
 
    An example UNIX domain stream socket client. This client transmits contents
    of stdin to a server socket.
@@ -50,7 +51,7 @@ int main(int argc, char *argv[])
             fatal("partial/failed write");
         }
     }
-    
+
     if (-1 == numRead)
     {
         errExit("read");

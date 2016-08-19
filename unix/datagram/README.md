@@ -1,13 +1,20 @@
-C code for UNIX domain stream sockets
-=====================================
-This directory contains pure C code for working with UNIX domain stream sockets
+C code for UNIX domain datagram sockets
+=======================================
+This directory contains pure C code for working with UNIX domain datagram sockets
 on a POSIX operating system.
 
-**unix_stream_server** is the server
-**unix_stream_client** is the client
+**unix_datagram_server** is the server
+**unix_datagram_client** is the client
+
+In general, datagram sockets are unreliable.  However for UNIX domain datagram
+sockets, the datagram transmission is carried out within the kernel and is reliable.
+Moreover, all messages are delivered in order and are unduplicated.
+
+On Linux, we can send quite large datagrams, but portable POSIX implementations should
+impose a maximum datagram size, such as 2048 bytes.
 
 
-UNIX stream server
+UNIX datagram server
 ------------------
 The server runs in an infinite loop waiting for clients to connect.
 
@@ -17,7 +24,7 @@ writes it to *stdout*.
 You need to kill it manually by sending it a signal.
 
 
-UNIX stream client
+UNIX datagram client
 ------------------
 The client reads everything from *stdin* and sends it to the server.  Once it hits
 *EOF* (end of file), it terminates.
@@ -29,9 +36,9 @@ If the code has been build using **cmake** in directory *build*, the code can be
 tested in the following manner:
 
     cd build
-    ./unix_stream_server > server_out.txt &
+    ./unix_datagram_server > server_out.txt &
     ls -lF /tmp/us*
-    echo "hello world" | ./unix_stream_client
+    echo "hello world" | ./unix_datagram_client
     kill %1
     cat server.out.txt
 
