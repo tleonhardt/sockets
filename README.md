@@ -53,10 +53,9 @@ See instructions within the README.md for the example you wish to run.
 
 Goals
 -----
-
-    * Simple working pure C code for socket programming
-    * Demonstrate proper error handling, setup, and teardown
-    * Work with any POSIX-based OS
+* Simple working pure C code for socket programming
+* Demonstrate proper error handling, setup, and teardown
+* Work with any POSIX-based OS
 
 
 Other Tools / Libraries to Consider
@@ -67,7 +66,7 @@ which abstracts away some of the intricacies (pains) of dealing with sockets.  I
 particular, 0MQ / ZeroMQ is an excellent library which has many advantages over
 direct socket programming:
 
-    * [0MQ](http://man7.org/tlpi/)
-        * Connect your code in any language, on any platform.
-        * Carries messages across inproc, IPC, TCP, TIPC, multicast
-        * Smart patterns like pub-sub, push-pull, and router-dealer
+* [0MQ](http://man7.org/tlpi/)
+    * Connect your code in any language, on any platform.
+    * Carries messages across inproc, IPC, TCP, TIPC, multicast
+    * Smart patterns like pub-sub, push-pull, and router-dealer
