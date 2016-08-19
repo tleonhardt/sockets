@@ -1,5 +1,5 @@
-C code for UNIX domain sockets
-==============================
+C code for UNIX domain stream sockets
+=====================================
 This directory contains pure C code for working with UNIX domain stream sockets
 on aPOSIX operating system.
 
