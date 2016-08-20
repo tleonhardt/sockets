@@ -1,7 +1,7 @@
 project(unix_stream_sockets)
 cmake_minimum_required(VERSION 2.6)
 
-set(TLPI_LIB_PATH "~/src/c/tlpi/lib")
+set(TLPI_LIB_PATH "../../lib")
 
 include_directories(${TLPI_LIB_PATH})
 
