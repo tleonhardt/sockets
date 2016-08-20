@@ -24,7 +24,7 @@
 */
 #include <sys/un.h>     // sockaddr_un struct
 #include <sys/socket.h> // socklen_t, saf_family_t, sockaddr struct, etc.
-#include <ctype.h>
+#include <ctype.h>      // toupper()
 #include "tlpi_hdr.h"   // errExit(), fatal(), errMsg()
 
 // Maximum size of messages exchanged between client and server

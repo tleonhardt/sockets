@@ -42,6 +42,7 @@ int main(int argc, char *argv[])
         fatal("Server socket path too long: %s", SV_SOCK_PATH);
     }
 
+    // Remove any existing file with the same pathname that we want to bind to
     if ( (-1 == remove(SV_SOCK_PATH)) && (ENOENT != errno) )
     {
         errExit("remove-%s", SV_SOCK_PATH);
@@ -51,6 +52,7 @@ int main(int argc, char *argv[])
     svaddr.sun_family = AF_UNIX;
     strncpy(svaddr.sun_path, SV_SOCK_PATH, sizeof(svaddr.sun_path) - 1);
 
+    // Bind the socket to a well-known address
     if ( -1 == bind(sfd, (struct sockaddr *) &svaddr, sizeof(struct sockaddr_un)) )
     {
         errExit("bind");

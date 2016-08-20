@@ -37,11 +37,13 @@ int main(int argc, char *argv[])
         errExit("socket");
     }
 
+    // Client address is made unique by including client's process ID
     memset(&claddr, 0, sizeof(struct sockaddr_un));
     claddr.sun_family = AF_UNIX;
     snprintf(claddr.sun_path, sizeof(claddr.sun_path),
             "/tmp/ud_ucase_cl.%ld", (long) getpid());
 
+    // Bind socket to an address, so that the server can send its reply
     if (-1 == bind(sfd, (struct sockaddr *) &claddr, sizeof(struct sockaddr_un)))
     {
         errExit("bind");

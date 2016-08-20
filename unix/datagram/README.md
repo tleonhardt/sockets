@@ -18,16 +18,17 @@ UNIX datagram server
 ------------------
 The server runs in an infinite loop waiting for clients to connect.
 
-When a client connects, it reads all of the data from the connected socket and
-writes it to *stdout*.
+When a client connects, it reads incoming data on the bound socket,
+converts it to uppercase, and sends it back to the client.
 
 You need to kill it manually by sending it a signal.
 
 
 UNIX datagram client
 ------------------
-The client reads everything from *stdin* and sends it to the server.  Once it hits
-*EOF* (end of file), it terminates.
+The client loops, sending each of its command-line arguments as a separate
+message to the server.  After sending each message, the client reads the server
+response and displays it on standard output.
 
 
 Using the code
@@ -36,11 +37,10 @@ If the code has been build using **cmake** in directory *build*, the code can be
 tested in the following manner:
 
     cd build
-    ./unix_datagram_server > server_out.txt &
-    ls -lF /tmp/us*
-    echo "hello world" | ./unix_datagram_client
-    kill %1
-    cat server.out.txt
+    ./unix_datagram_server &
+    ./unix_datagram_client hello world
+    kill %1f
 
-The *cat* command should echo "hello world" because that is the message that was
-transmitted from the client to the server.
+The client should display two responses from the server:
+Response 1:  HELLO
+Response 2:  WORLD
