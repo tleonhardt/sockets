@@ -1,7 +1,7 @@
-C code for Internet domain (IPv4) sockets
-=========================================
-This directory contains pure C code for working with Internet domain IPv4 sockets on a
-POSIX operating system.  There is code for both stream and datagram sockets.  
+C code for Internet domain sockets
+==================================
+This directory contains pure C code for working with Internet domain IPv4 and IPv6
+sockets on a POSIX operating system.  There is code for both stream and datagram sockets.  
 For each configuration there is code for both a client and a server.
 
 Sockets exist in a *communication domain*, which determines:
@@ -9,9 +9,10 @@ Sockets exist in a *communication domain*, which determines:
 * the method of identifying a socket (i.e. the format of a socket address)
 * the range of communication (i.e. between applications on the same host or between applications on different hosts connected to a network)
 
-Internet domain IPv4 (AF_INET) sockets allow communication between applications
-on different hosts located on the same network.  Internet domain address are a combination of
-a 32-bit IPv4 address and a 16-bit port number.
+Internet domain sockets allow communication between applications on different hosts
+located on the same network.  Internet domain address are a combination of
+an IP address and a 16-bit port number.  For IPv4 sockets the IP address is a
+32-bit unsigned number, while for IPv6 sockets, the IP address ia a 128-bit number.
 
 Stream vs Datagram sockets
 --------------------------
@@ -19,11 +20,11 @@ Every sockets implementation provides at least two types of sockets: stream and
 datagram.  Both of these provide a bidirectional communication channel.
 
 Stream sockets support reliable delivery in a connection-oriented protocol which
-does not preserve message boundaries, but instead has a byte-stream.  In IPv4,
-stream sockets are provided by TCP/IP.
+does not preserve message boundaries, but instead has a byte-stream.  In the Internet
+domain, stream sockets are provided by TCP/IP.
 
 Datagram sockets preserve message boundaries using an unreliable and connectionless
-protocol.  In IPv4, datagram sockets are provided by UDP/IP.
+protocol.  In the Internet domain, datagram sockets are provided by UDP/IP.
 
 
 Network Byte Order
