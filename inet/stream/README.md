@@ -20,18 +20,25 @@ strings terminated by a newline.
 
 Internet stream server
 ----------------------
-The server runs in an infinite loop waiting for clients to connect.
+The server initializes the sequence number either to 0 or to the value supplied
+in the optional command-line argument.  It then runs in an infinite loop waiting
+for clients to connect iteratively.
 
-When a client connects, it reads all of the data from the connected socket and
-writes it to *stdout*.
+When a client connects, it reads how many sequence numbers the client is requesting
+from the socket, sends the current value of the sequence number back to the client,
+and then increments the sequence number by the amount the client requested.
 
 You need to kill it manually by sending it a signal.
 
 
 Internet stream client
 ----------------------
-The client reads everything from *stdin* and sends it to the server.  Once it hits
-*EOF* (end of file), it terminates.
+The client accepts two arguments:
+1. server hostname (mandatory)
+1. length of sequence desired (optional), default is 1
+
+The client connects to the server, sends the desired length of sequence, reads
+the starting sequence number back from the server and prits it on **stdout**.
 
 
 Using the code
@@ -40,11 +47,9 @@ If the code has been build using **cmake** in directory *build*, the code can be
 tested in the following manner:
 
     cd build
-    ./inet_stream_server > server_out.txt &
-    ls -lF /tmp/us*
-    echo "hello world" | ./inet_stream_client
+    ./ip4_stream_server &
+    ./ip4_stream_client localhost
     kill %1
-    cat server.out.txt
 
-The *cat* command should echo "hello world" because that is the message that was
-transmitted from the client to the server.
+In the above case, the client requests 1 sequence number and the server returns
+sequence number 0.

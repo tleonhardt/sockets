@@ -164,14 +164,16 @@ int main(int argc, char *argv[])
         }
 
         // Send the current value of the sequence number back to the client,
-        // encoding it as a newline-terminated string
+        //  encoding it as a newline-terminated string.
+        // The client can assume it has been allocated all of the sequence numbers in the range
+        //   seqNum to (seqNum + reqLen - 1)
         snprintf(seqNumStr, INT_LEN, "%d\n", seqNum);
         if (write(cfd, seqNumStr, strlen(seqNumStr)) != strlen(seqNumStr))
         {
             fprintf(stderr, "Error on write");
         }
 
-        // Update sequence number
+        // Update the server's sequence number by adding reqLen to seqNum
         seqNum += reqLen;
 
         // Close connection

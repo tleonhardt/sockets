@@ -14,6 +14,10 @@
    A simple Internet stream socket client. This client requests a sequence
    number from the server.
 
+   This client accepts two arguments.  The first argument, which is the name of the host on which
+   the server is running, is mandatory.  The optional second argument is the length of the sequence
+   desired by the client.   The default length is 1.
+
    See also ip4_stream_server.c.
 */
 #include <netdb.h>
@@ -33,14 +37,13 @@ int main(int argc, char *argv[])
         usageErr("%s server-host [sequence-len]\n", argv[0]);
     }
 
-    /* Call getaddrinfo() to obtain a list of addresses that
-       we can try connecting to */
-
+    // Call getaddrinfo() to obtain a list of socket addresses structures suitable for connecting
+    // to a TCP server bound to the specified host using the port number, PORT_NUM.
     memset(&hints, 0, sizeof(struct addrinfo));
     hints.ai_canonname = NULL;
     hints.ai_addr = NULL;
     hints.ai_next = NULL;
-    hints.ai_family = AF_UNSPEC;                /* Allows IPv4 or IPv6 */
+    hints.ai_family = AF_UNSPEC;    // Allows IPv4 or IPv6
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_flags = AI_NUMERICSERV;
 
@@ -53,6 +56,7 @@ int main(int argc, char *argv[])
     //   that can be used to successfully connect a socket
     for (rp = result; rp != NULL; rp = rp->ai_next)
     {
+        // Create a socket
         cfd = socket(rp->ai_family, rp->ai_socktype, rp->ai_protocol);
         if (-1 == cfd)
         {
@@ -60,6 +64,8 @@ int main(int argc, char *argv[])
             continue;
         }
 
+        // Attempt to connect the socket to this server address.  Since the client has not bound
+        // it's socket, the connect() call causes the kernel to assign an ephemeral port to it.
         if (-1 != connect(cfd, rp->ai_addr, rp->ai_addrlen))
         {
             // Success
