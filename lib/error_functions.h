@@ -14,8 +14,7 @@
 
    Header file for error_functions.c.
 */
-#ifndef ERROR_FUNCTIONS_H
-#define ERROR_FUNCTIONS_H
+#pragma once
 
 /* Error diagnostic routines */
 
@@ -43,5 +42,3 @@ void fatal(const char *format, ...) NORETURN ;
 void usageErr(const char *format, ...) NORETURN ;
 
 void cmdLineErr(const char *format, ...) NORETURN ;
-
-#endif

@@ -14,8 +14,7 @@
 
    Standard header file used by nearly all of our example programs.
 */
-#ifndef TLPI_HDR_H
-#define TLPI_HDR_H      /* Prevent accidental double inclusion */
+#pragma once
 
 #include <sys/types.h>  /* Type definitions used by many programs */
 #include <stdio.h>      /* Standard I/O functions */
@@ -78,6 +77,4 @@ typedef int socklen_t;
 
 #define sival_int sigval_int
 #define sival_ptr sigval_ptr
-#endif
-
 #endif

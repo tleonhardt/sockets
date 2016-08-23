@@ -24,6 +24,7 @@
    See Section 38.7 of "The Linux Programming Interface" for more details
    on this subject.)
  */
+#pragma once
 
 #include <sys/un.h>     // sockaddr_un struct
 #include <sys/socket.h> // socklen_t, saf_family_t, sockaddr struct, etc.

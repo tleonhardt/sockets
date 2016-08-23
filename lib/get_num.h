@@ -14,8 +14,7 @@
 
    Header file for get_num.c.
 */
-#ifndef GET_NUM_H
-#define GET_NUM_H
+#pragma once
 
 #define GN_NONNEG       01      /* Value must be >= 0 */
 #define GN_GT_0         02      /* Value must be > 0 */
@@ -28,5 +27,3 @@
 long getLong(const char *arg, int flags, const char *name);
 
 int getInt(const char *arg, int flags, const char *name);
-
-#endif
